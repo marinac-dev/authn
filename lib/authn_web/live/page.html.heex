@@ -1,0 +1,64 @@
+<section>
+  <h2>Welcome to Authn</h2>
+</section>
+<%= case @live_action do %>
+  <% :index -> %>
+    <section>
+      <p>
+        <.form let={f} for={:user} phx-submit="maybe-login">
+          <%= label f, :username, "Username" %>
+          <%= text_input f, :username, placeholder: "Enter your username" %>
+          <%= error_tag f, :username %>
+
+          <%= submit "Next" %>
+        </.form>
+      </p>
+    </section>
+
+  <% :register -> %>
+    <section id="register-user" phx-hook="RegisterKey">
+      <p>
+        <h2>Please Register</h2>
+        <.form let={f} for={@changeset} phx-submit="register">
+          <%= label f, :username %>
+          <%= text_input f, :username, placeholder: "Enter your username" %>
+          <%= error_tag f, :username %>
+
+          <%= label f, :password %>
+          <%= password_input f, :password, placeholder: "Enter a strong password" %>
+          <%= error_tag f, :password %>
+
+          <%= submit "Next" %>
+        </.form>
+      </p>
+    </section>
+
+  <% :attest -> %>
+    ATTEST
+
+  <% :authenticate -> %>
+    <section id="authenticate-user" phx-hook="RegisterKey">
+      <p>
+        <h2>Please Login</h2>
+        <.form let={f} for={:user} phx-submit="authenticate">
+          <%= label f, :username %>
+          <%= text_input f, :username, placeholder: "Enter your username" %>
+          <%= error_tag f, :username %>
+
+          <%= submit "Next" %>
+        </.form>
+      </p>
+    </section>
+
+  <% _ -> %>
+    <p>ERROR!</p>
+
+<% end %>
+
+<%= if @authenticator do %>
+  <section class="phx-hero">
+    <h1><%= gettext "Register a new security key" %></h1>
+    <img src={Routes.static_path(@socket, "/images/fingerprint-scan.svg")}/><br/>
+    <p> press your authenticator now!</p>
+  </section>
+<% end %>
